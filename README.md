@@ -9,7 +9,7 @@ DiT-MoE as a sparse version of the diffusion Transformer, is scalable and compet
 ![DiT-MoE framework](visuals/framework.png)
 
 
-* 🪐 A PyTorch [implementation](models.py) of DiT-MoE and pre-trained checkpoints in paper
+* 🪐 A PyTorch [implementation](models.py) of Enso and pre-trained checkpoints in paper
 * 🌋 **Rectified flow**-based training and sampling scripts
 * 💥 A [sampling script](sample.py) for running pre-trained DiT-MoE
 * 🛸 A DiT-MoE training script using PyTorch [DDP](train.py) and [deepspeed](train_deepspeed.py)
