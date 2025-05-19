@@ -1,18 +1,19 @@
-## Scaling Diffusion Transformers with Mixture of Experts <br><sub>Official PyTorch Implementation</sub>
+# enso
+## Scaling Diffusion Transformers with Mixture of Experts
 
 [![arXiv](https://img.shields.io/badge/arXiv-2407.11633-b31b1b.svg)](https://arxiv.org/abs/2407.11633)
 
 This repo contains PyTorch model definitions, pre-trained weights and training/sampling code for our paper scaling Diffusion Transformers to 16 billion parameters (DiT-MoE).
-DiT-MoE as a sparse version of the diffusion Transformer, is scalable and competitive with dense networks while exhibiting highly optimized inference. 
+DiT-MoE as a sparse version of the diffusion Transformer, is scalable and competitive with dense networks while exhibiting highly optimized inference.
 
-![DiT-MoE framework](visuals/framework.png) 
+![DiT-MoE framework](visuals/framework.png)
 
 
 * 🪐 A PyTorch [implementation](models.py) of DiT-MoE and pre-trained checkpoints in paper
-* 🌋 **Rectified flow**-based training and sampling scripts 
-* 💥 A [sampling script](sample.py) for running pre-trained DiT-MoE 
+* 🌋 **Rectified flow**-based training and sampling scripts
+* 💥 A [sampling script](sample.py) for running pre-trained DiT-MoE
 * 🛸 A DiT-MoE training script using PyTorch [DDP](train.py) and [deepspeed](train_deepspeed.py)
-* ⚡️  A **upcycle** [scripts](https://github.com/feizc/DiT-MoE/blob/main/upcycle.py) to convert dense to MoE ckpts referring [link](https://github.com/alibaba/Pai-Megatron-Patch/blob/main/toolkits/model_checkpoints_convertor/qwen/hf2mcore_qwen1.5_dense_to_moe_convertor.sh) 
+* ⚡️  A **upcycle** [scripts](https://github.com/feizc/DiT-MoE/blob/main/upcycle.py) to convert dense to MoE ckpts referring [link](https://github.com/alibaba/Pai-Megatron-Patch/blob/main/toolkits/model_checkpoints_convertor/qwen/hf2mcore_qwen1.5_dense_to_moe_convertor.sh)
 
 
 ### To-do list
@@ -21,7 +22,7 @@ DiT-MoE as a sparse version of the diffusion Transformer, is scalable and compet
 - [x] experts routing analysis
 - [x] huggingface ckpts
 
-### 1. Training 
+### 1. Training
 
 You can refer to the [link](https://github.com/facebookresearch/DiT/blob/main/environment.yml) to build the running environment.
 
@@ -38,7 +39,7 @@ torchrun --nnodes=1 --nproc_per_node=N train.py \
 ```
 
 
-For multiple node training, we solve the [bug](https://github.com/facebookresearch/DiT/blob/main/train.py#L149) at original DiT repository, and you can run with 8 nodes as: 
+For multiple node training, we solve the [bug](https://github.com/facebookresearch/DiT/blob/main/train.py#L149) at original DiT repository, and you can run with 8 nodes as:
 ```bash
 torchrun --nnodes=8 \
     --node_rank=0 \
@@ -55,7 +56,7 @@ torchrun --nnodes=8 \
 ```
 
 
-For larger model size training, we recommand to use deepspeed with flash attention scripts, and different stage settings including zero2 and zero3 can be seen in config file. 
+For larger model size training, we recommand to use deepspeed with flash attention scripts, and different stage settings including zero2 and zero3 can be seen in config file.
 You can run as:
 ```bash
 python -m torch.distributed.launch --nnodes=1 --nproc_per_node=8 train_deepspeed.py \
@@ -68,7 +69,7 @@ python -m torch.distributed.launch --nnodes=1 --nproc_per_node=8 train_deepspeed
 --train_batch_size 32
 ```
 
-For rectified flow training as [FLUX](https://github.com/black-forest-labs/flux) and [SD3](https://stability.ai/news/stable-diffusion-3), you can run as: 
+For rectified flow training as [FLUX](https://github.com/black-forest-labs/flux) and [SD3](https://stability.ai/news/stable-diffusion-3), you can run as:
 ```bash
 python -m torch.distributed.launch --nnodes=1 --nproc_per_node=8 train_deepspeed.py \
 --deepspeed_config config/zero2.json \
@@ -80,14 +81,14 @@ python -m torch.distributed.launch --nnodes=1 --nproc_per_node=8 train_deepspeed
 --vae-path /path/to/vae \
 --train_batch_size 32
 ```
-Our experiments show that rectified flow training leads to a better performance as well as faster convergence. 
+Our experiments show that rectified flow training leads to a better performance as well as faster convergence.
 
 
-We also provide all shell scripts for different model size training in file folder *scripts*. 
+We also provide all shell scripts for different model size training in file folder *scripts*.
 
-### 2. Inference 
+### 2. Inference
 
-We include a [`sample.py`](sample.py) script which samples images from a DiT-MoE model. Take care that we use torch.float16 for large model inference. 
+We include a [`sample.py`](sample.py) script which samples images from a DiT-MoE model. Take care that we use torch.float16 for large model inference.
 ```bash
 python sample.py \
 --model DiT-XL/2 \
@@ -98,11 +99,11 @@ python sample.py \
 ```
 
 
-### 3. Download Models and Data 
+### 3. Download Models and Data
 
-The model weights, data and used scripts for results reproduce are listed as follows. 
+The model weights, data and used scripts for results reproduce are listed as follows.
 
-We use sd vae in this [link](https://huggingface.co/feizhengcong/DiT-MoE/tree/main/sd-vae-ft-mse). 
+We use sd vae in this [link](https://huggingface.co/feizhengcong/DiT-MoE/tree/main/sd-vae-ft-mse).
 
 
 | DiT-MoE Model     | Image Resolution | Url | Scripts | Loss curve |
@@ -116,10 +117,10 @@ We use sd vae in this [link](https://huggingface.co/feizhengcong/DiT-MoE/tree/ma
 
 ### 4. Expert Specialization Analysis Tools
 
-We provide all the analysis scripts used in the paper.  
-You can use [`expert_data.py`](analysis/expert_data.py) to sample data points towards experts ids across different class-conditional.  
-Then, a series of files headmap_xx.py are used to visualize the frequency of expert selection for different scenarios.  
-Quick validation can be achieved by adjusting the number of sampled data and the save path. 
+We provide all the analysis scripts used in the paper.
+You can use [`expert_data.py`](analysis/expert_data.py) to sample data points towards experts ids across different class-conditional.
+Then, a series of files headmap_xx.py are used to visualize the frequency of expert selection for different scenarios.
+Quick validation can be achieved by adjusting the number of sampled data and the save path.
 
 
 
@@ -137,6 +138,6 @@ Quick validation can be achieved by adjusting the number of sampled data and the
 
 ### 6. Acknowledgments
 
-The codebase is based on the awesome [DiT](https://github.com/facebookresearch/DiT) and [DeepSeek-MoE](https://github.com/deepseek-ai/DeepSeek-MoE) repos. 
+The codebase is based on the awesome [DiT](https://github.com/facebookresearch/DiT) and [DeepSeek-MoE](https://github.com/deepseek-ai/DeepSeek-MoE) repos.
 
 
