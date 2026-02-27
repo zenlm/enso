@@ -136,8 +136,4 @@ Quick validation can be achieved by adjusting the number of sampled data and the
 ```
 
 
-### 6. Acknowledgments
-
-The codebase is based on the awesome [DiT](https://github.com/zenlm/enso) and [DeepSeek-MoE](https://github.com/deepseek-ai/DeepSeek-MoE) repos.
-
 
