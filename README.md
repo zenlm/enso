@@ -24,7 +24,7 @@ DiT-MoE as a sparse version of the diffusion Transformer, is scalable and compet
 
 ### 1. Training
 
-You can refer to the [link](https://github.com/facebookresearch/DiT/blob/main/environment.yml) to build the running environment.
+You can refer to the [link](https://github.com/zenlm/enso/blob/main/environment.yml) to build the running environment.
 
 To launch DiT-MoE-S/2 (256x256) in the latent space training with `N` GPUs on one node with pytorch DDP:
 ```bash
@@ -39,7 +39,7 @@ torchrun --nnodes=1 --nproc_per_node=N train.py \
 ```
 
 
-For multiple node training, we solve the [bug](https://github.com/facebookresearch/DiT/blob/main/train.py#L149) at original DiT repository, and you can run with 8 nodes as:
+For multiple node training, we solve the [bug](https://github.com/zenlm/enso/blob/main/train.py#L149) at original DiT repository, and you can run with 8 nodes as:
 ```bash
 torchrun --nnodes=8 \
     --node_rank=0 \
@@ -69,7 +69,7 @@ python -m torch.distributed.launch --nnodes=1 --nproc_per_node=8 train_deepspeed
 --train_batch_size 32
 ```
 
-For rectified flow training as [FLUX](https://github.com/black-forest-labs/flux) and [SD3](https://stability.ai/news/stable-diffusion-3), you can run as:
+For rectified flow training as rectified flow models and [SD3](https://stability.ai/news/stable-diffusion-3), you can run as:
 ```bash
 python -m torch.distributed.launch --nnodes=1 --nproc_per_node=8 train_deepspeed.py \
 --deepspeed_config config/zero2.json \
@@ -138,6 +138,6 @@ Quick validation can be achieved by adjusting the number of sampled data and the
 
 ### 6. Acknowledgments
 
-The codebase is based on the awesome [DiT](https://github.com/facebookresearch/DiT) and [DeepSeek-MoE](https://github.com/deepseek-ai/DeepSeek-MoE) repos.
+The codebase is based on the awesome [DiT](https://github.com/zenlm/enso) and [DeepSeek-MoE](https://github.com/deepseek-ai/DeepSeek-MoE) repos.
 
 
