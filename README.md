@@ -1,3 +1,5 @@
+<p align="center"><img src=".github/hero.svg" alt="enso" width="880"></p>
+
 # enso
 ## Scaling Diffusion Transformers with Mixture of Experts
 
